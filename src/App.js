@@ -6,6 +6,7 @@ import Task from "./Task";
 
 function App() {
     const [list, setList] = useState([])
+    const [newTask, setNewTask] = useState('')
 
 
     const getList = () => {
@@ -20,12 +21,13 @@ function App() {
     }
     const createCard = async () => {
       await  axios.post('https://nazarov-kanban-server.herokuapp.com/card', {
-            name: 'Drag and Drop',
+            name: newTask,
             description: 'I love draw'
         })
             .then(res => console.log(res))
             .catch(error => console.log(error))
         getList()
+        setNewTask('')
     }
     const deleteCard =  async (id) => {
       await axios.delete(`https://nazarov-kanban-server.herokuapp.com/card/${id}`)
@@ -38,6 +40,7 @@ function App() {
     return (
         <div className="App">
             <button onClick={getList}>getTask</button>
+            <input type="text" value={newTask} onChange={event => setNewTask(event.target.value)}/>
             <button onClick={createCard}>create new card</button>
             {list.map(task =>
                 <div>
